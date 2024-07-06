@@ -45,7 +45,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - ME_CONFIG_MONGODB_URL=mongodb://root:example@mongo:27017/
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:pass@mongo:27017/
     ports:
       - 8081:8081
     networks:
