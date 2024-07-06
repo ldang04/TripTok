@@ -11,6 +11,9 @@ services:
     command: npm start
     environment:
       PORT: 3001
+      MONGO_URL: mongodb://root:example@mongo:27017/?authSource=admin
+    networks:
+      - triptok-dev
 
   server2:
     build: ./server2
@@ -22,3 +25,35 @@ services:
     command: npm start
     environment:
       PORT: 3002
+    networks:
+      - triptok-dev
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - triptok-dev
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongo
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://root:example@mongo:27017/
+    ports:
+      - 8081:8081
+    networks:
+      - triptok-dev
+
+volumes:
+  mongo-data:
+    driver: local
+
+networks:
+  triptok-dev:
